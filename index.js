@@ -72,6 +72,53 @@ app.post('/circle',  function (req, res){
 
 
 
+app.post('/book',  function (req, res){
+
+	var author = req.body.author;
+	var bookid = Number(req.body.bookid);
+	var category = req.body.category;
+	var isbn = req.body.isbn;
+	var pageCount = Number(req.body.pageCount);
+	var price = Number(req.body.price);
+	var publishedDate = req.body.publishedDate;
+	var shortDescription = req.body.shortDescription;
+	var thumbnailUrl = req.body.thumbnailUrl;
+	var title = req.body.title;
+
+	//console.log(author);
+
+	var referencaPath ='/books/' + bookid + '/';
+
+	var booksReference = db.ref(referencaPath);
+
+	if (booksReference != null){
+
+		booksReference.update( {author:author, bookid: bookid, category: category,
+			 isbn: isbn, pageCount: pageCount, price: price, publishedDate: publishedDate, 
+			 shortDescription: shortDescription, thumbnailUrl: thumbnailUrl, title: title,  }  ,
+			 function(error){
+				 if (error){
+					 res.send("Data could not be saved." + error)
+				 }
+				 else{
+					res.send("Success!");
+				 }
+			 }
+			 );
+
+
+	}
+
+
+});
+
+
+
+
+
+
+
+
 
 
 
@@ -142,7 +189,17 @@ app.get('/student/:studentId',  function (req, res)  {
 app.delete('/book/:bookid',  function (req, res)  {  
   	
 	//Code Here
-	
+	//res.setHeader('Content-Type', 'application/json');
+	var bookid = Number(req.params.bookid);
+
+	var referencaPath ='/books/' + bookid + '/';
+	var booksReference = db.ref(referencaPath);
+
+	if (booksReference!=null){
+		booksReference.remove()
+		res.send("Success!!");
+	}
+	if (error) throw error;
 
 	
 
